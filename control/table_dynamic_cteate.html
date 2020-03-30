@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!----- 参考：https://www.cnblogs.com/Renyi-Fan/p/9134967.html----->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态创建表格</title>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+<h3>动态创建表格1</h3>
+ 行数 <input type="text" value="5" id="rows">
+ 列数 <input type="text" value="5" id="cols">
+ 
+<input type="button" value="创建列表" onclick="createTable()"/>
+
+<div id="dv"></div>
+
+<script>
+
+	function createTable()
+	{
+		div=document.getElementById('dv');
+		var tab='<table border=1 width=500">'
+		// 添加表头
+		tab +="<tr style='background:blue'>"
+		tab +='<th>name</th>'
+		tab +='<th>ip</th>'
+		tab +='<th>port</th>'
+		tab +='</tr>'
+
+		var rows = 5, cols = 3
+		for(var i=0; i<rows; i++)
+		{
+			tab +='<tr>'
+			for(var j=0; j < cols; j++)
+			{
+				tab+="<td style='background:green'>" + i + j + "</td>"
+			}
+			tab+='</tr>'
+		}
+		tab+='</table>'
+		div.innerHTML=tab
+	}
+
+</script>
+</body>
+</html>

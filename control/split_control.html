@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div {
+            width: 300px;
+            height: 400px;
+            border: 2px solid pink;
+        }
+        li {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="创建列表" id="bt"/>
+
+<div id="dv"></div>
+
+<script>
+    var kungfu = ["降龙十八掌", "打狗棒法", "北冥神功", "易筋经", "含笑半步癫", "天地明灭"];
+    //点击按钮动态创建列表,把列表加入到div中
+    document.getElementById("bt").onclick = function () {
+        //创建ul,把ul立刻加入到父级元素中
+        var ulObj = document.createElement("ul");
+        document.getElementById("dv").appendChild(ulObj);
+        //动态的创建li,加入到ul中
+        for (var i = 0; i < kungfu.length; i++) {
+            var liObj = document.createElement("li");
+            //设置li中的文字
+            liObj.innerHTML = kungfu[i];
+            //将li追加到ul中
+            ulObj.appendChild(liObj);
+            //为li添加鼠标进入事件
+            liObj.onmouseover = mouseoverHandle;
+            //为li添加鼠标离开事件
+            liObj.onmouseout = mouseoutHandle;
+        }
+    };
+    //按钮的点击事件外面
+    function mouseoverHandle() {
+        this.style.backgroundColor = "red";
+    }
+    function mouseoutHandle() {
+        this.style.backgroundColor = "";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!----- 参考：https://www.cnblogs.com/cuilichao/p/9383018.html ----->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态创建表格</title>
+	<style type="text/css">
+
+	#container {
+		position: absolute;
+	}
+	div.pos_left
+	{
+		display:inline-block;
+	}
+	div.pos_right
+	{
+		display:inline-block;
+		vertical-align: top;  	//与左侧div顶部对齐
+	}
+	
+	</style>
+</head>
+<body>
+<h3>动态创建表格1</h3>
+
+<input type="button" value="设置" onclick="setting()"/>
+
+<p id="info" >info:<p>
+<p id="chn" >chn: <p>
+
+
+<div id="container">
+<div class="pos_left" id="dv"></div>
+<div class="pos_right" id="dv_chn"></div>
+</div>
+
+<script>
+var ip, port, name, chn
+function setting()
+{
+	console.log("name: " + name + " ip: " + ip + " port: " + port + " chn: " + chn)
+}
+function createTable()
+{
+	var list=[{"ip":"172.20.2.20", "port":80, "name":"cam20"},
+			  {"ip":"172.20.2.21", "port":81, "name":"cam21"},
+			  {"ip":"172.20.2.22", "port":82, "name":"cam22"}]
+
+	rows=3
+	cols=3
+	rows = list.length;
+	cols = Object.keys(list[0]).length;
+	dv=document.getElementById('dv');
+	// js动态创建表
+	var get_table = dv.getElementsByTagName('table')[0]
+	if(get_table) 
+	{
+		get_table.parentNode.removeChild(get_table)
+	}
+	// 创建表格
+	var table = document.createElement("table")
+	table.width = 500;
+	table.border = 3
+	// 创建表头
+	var header = table.createTHead()
+	var row0 = header.insertRow(0)
+	cell0 = row0.insertCell(0)
+	cell0.innerHTML="name"
+	cell0.style.background='blue';
+	cell1 = row0.insertCell(1)
+	cell1.innerHTML="ip"
+	cell1.style.background='blue';
+	cell2 = row0.insertCell(2)
+	cell2.innerHTML="port"
+	cell2.style.background='blue';
+	
+	// 以下的行要从1开始，因为0被表头占用了
+	for(var i=1;i<rows+1; i++)
+	{
+		table.insertRow(i)
+		//  添加点击事件
+		// https://stackoverflow.com/questions/1207939/adding-an-onclick-event-to-a-table-row
+		currentRow = table.rows[i]
+		var createClickHandler = function(row) {
+			return function() {
+				cell = row.getElementsByTagName("td");
+				name = cell[0].innerHTML;
+				ip = cell[1].innerHTML;
+				port = cell[2].innerHTML;
+				//alert("id:" + id);
+				console.log("name: " + name + " ip: " + ip + " port: " + port)
+				document.getElementById("info").innerHTML ="info:"  + name + " " + ip + " " + port
+			};
+		};
+		currentRow.onclick = createClickHandler(currentRow);
+		table.rows[i].insertCell(0).innerHTML=list[i-1].name;
+		table.rows[i].cells[0].style.background='green';
+		table.rows[i].insertCell(1).innerHTML=list[i-1].ip;
+		table.rows[i].cells[1].style.background='green';
+		table.rows[i].insertCell(2).innerHTML=list[i-1].port;
+		table.rows[i].cells[2].style.background='green';
+	}
+	document.getElementById("dv").appendChild(table)
+}
+
+function createChnTable()
+{
+	div=document.getElementById('dv_chn');
+	var tab='<table id="table_chn" border=1 width=100">'
+	// 添加表头
+	tab +="<tr style='background:blue'>"
+	tab +='<th>chn</th>'
+	tab +='</tr>'
+
+	var rows = 5, cols = 1
+	for(var i=0; i<rows; i++)
+	{
+		tab +='<tr>'
+		for(var j=0; j < cols; j++)
+		{
+			tab+="<td style='background:green'>" +  i + "</td>"
+		}
+		tab+='</tr>'
+	}
+	tab+='</table>'
+	div.innerHTML=tab
+	
+	table = document.getElementById("table_chn")
+	for(var i=1;i<rows+1; i++)
+	{
+		currentRow = table.rows[i]
+		var createClickHandler = function(row) {
+			return function() {
+				var cell = row.getElementsByTagName("td");
+				chn = cell[0].innerHTML;
+				//alert("id:" + id);
+				console.log("chn: " + chn)
+				document.getElementById("chn").innerHTML ="chn:"  + chn 
+			};
+		};
+		currentRow.onclick = createClickHandler(currentRow);
+	}
+}
+createTable();
+createChnTable();
+
+</script>
+</body>
+</html>
